@@ -42,7 +42,7 @@ st.title("🧥 기온 기반 의류 판매량 분석 대시보드")
 st.caption("※ 의류 판매량 데이터는 분석·학습을 위해 가상으로 생성한 모의 데이터이며, 실제 시장 판매량과 다를 수 있습니다.")
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_PATH = BASE_DIR / "data" / "clothing_sales_weather_2023.csv"
+DATA_PATH = BASE_DIR / "clothing_sales_weather_2023.csv"
 
 
 @st.cache_data
