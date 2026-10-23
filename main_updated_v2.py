@@ -42,7 +42,17 @@ st.title("🧥 기온 기반 의류 판매량 분석 대시보드")
 st.caption("※ 의류 판매량 데이터는 분석·학습을 위해 가상으로 생성한 모의 데이터이며, 실제 시장 판매량과 다를 수 있습니다.")
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_PATH = BASE_DIR / "data" / "clothing_sales_weather_2023.csv"
+
+# CSV 파일이 저장소 최상위 또는 data 폴더에 있는지 확인
+DATA_CANDIDATES = [
+    BASE_DIR / "clothing_sales_weather_2023.csv",
+    BASE_DIR / "data" / "clothing_sales_weather_2023.csv",
+]
+
+DATA_PATH = next(
+    (path for path in DATA_CANDIDATES if path.is_file()),
+    None
+)
 
 
 @st.cache_data
@@ -68,8 +78,12 @@ def read_sales_csv(path):
     return data.sort_values("date").reset_index(drop=True)
 
 
-if not DATA_PATH.is_file():
-    st.error("데이터 파일을 찾을 수 없습니다. data 폴더에 clothing_sales_weather_2023.csv 파일이 있는지 확인해 주세요.")
+if DATA_PATH is None:
+    st.error("CSV 파일을 찾을 수 없습니다.")
+    st.write("앱 실행 위치:", BASE_DIR)
+    st.write("확인한 파일 경로:")
+    for path in DATA_CANDIDATES:
+        st.write(str(path), "→", "파일 있음" if path.is_file() else "파일 없음")
     st.stop()
 
 try:
